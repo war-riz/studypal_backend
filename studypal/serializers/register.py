@@ -6,12 +6,12 @@ User = get_user_model()  # Get our custom user model
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['student_id', 'full_name', 'course_of_study', 'gender', 'user_type']
+        fields = ['matricNumber', 'fullName', 'course', 'gender', 'role']
     
-    def validate_student_id(self, value):
+    def validate_matricNumber(self, value):
         """ Ensure student ID is unique """
-        if User.objects.filter(student_id=value).exists():
-            raise serializers.ValidationError("A user with this Student ID already exists.")
+        if User.objects.filter(matricNumber=value).exists():
+            raise serializers.ValidationError("A student with this matricNumber already exists.")
         return value
     
     def create(self, validated_data):

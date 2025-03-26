@@ -16,8 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import handler400, handler403, handler404, handler500
+from studypal.error_handlers.error import custom_400_view, custom_403_view, custom_404_view, custom_500_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('studypal.routes.urls')),
 ]
+
+handler400 = custom_400_view
+handler403 = custom_403_view
+handler404 = custom_404_view
+handler500 = custom_500_view
+

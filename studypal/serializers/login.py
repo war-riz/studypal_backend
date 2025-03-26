@@ -6,23 +6,23 @@ from rest_framework_simplejwt.tokens import RefreshToken
 User = get_user_model()
 
 class LoginSerializer(serializers.Serializer):
-    student_id = serializers.CharField(write_only=True)
+    matricNumber = serializers.CharField(write_only=True)
 
     def validate(self, data):
         """ Check if the student_id exists """
-        student_id = data.get("student_id")
+        matricNumber = data.get("matricNumber")
 
         try:
-            user = User.objects.get(student_id=student_id)
+            user = User.objects.get(matricNumber=matricNumber)
         except User.DoesNotExist:
-            raise AuthenticationFailed("No account found with this Student ID.")
+            raise AuthenticationFailed("No account found with this matricNumber.")
 
         # Generate JWT token
         refresh = RefreshToken.for_user(user)
 
         return {
-            "student_id": user.student_id,
-            "full_name": user.full_name,
+            "matricNumber": user.matricNumber,
+            "fullName": user.fullName,
             "access_token": str(refresh.access_token),
             "refresh_token": str(refresh),
         }
