@@ -9,28 +9,31 @@ class CustomUserManager(BaseUserManager):
         if not matricNumber:
             raise ValueError("Matric Number is required for students")
 
+        if CustomUser.objects.filter(matricNumber=matricNumber).exists():
+            raise ValueError("A user with this Matric Number already exists.")
+
         user = self.model(
             matricNumber=matricNumber,
             fullName=fullName,
             course=course,
             gender=gender,
-            role=role
+            role=role,
         )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, email, password):
-        """Create and return a superuser with username, email, and password."""
+    def create_superuser(self, matricNumber, email, password):
+        """Create and return a superuser with matricNumber, email, and password."""
         if not email:
             raise ValueError("Superuser must have an email address")
-        if not username:
-            raise ValueError("Superuser must have a username")
+        if not matricNumber:
+            raise ValueError("Superuser must have a matricNumber")
         if not password:
             raise ValueError("Superuser must have a password")
 
         superuser = self.model(
-            username=username,
+            matricNumber=matricNumber,
             email=self.normalize_email(email),
             is_staff=True,
             is_superuser=True
@@ -42,7 +45,9 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractUser):
     """Custom user model"""
-    matricNumber = models.CharField(max_length=50, unique=True, blank=True, null=True)
+    username = None  # Remove default username field
+    matricNumber = models.CharField(max_length=50, unique=True)
+
     fullName = models.CharField(max_length=255, blank=True, null=True)
     course = models.CharField(max_length=255, blank=True, null=True)
     gender = models.CharField(
@@ -58,11 +63,11 @@ class CustomUser(AbstractUser):
 
     objects = CustomUserManager()
 
-    USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ["email"]
+    USERNAME_FIELD = "matricNumber"  # Use matricNumber for login
+    REQUIRED_FIELDS = ["email"]  # Keep email required for superusers
 
     def __str__(self):
-        if self.fullName and self.matricNumber:
-            return f"{self.fullName} ({self.matricNumber})"
-        return self.username  # Fallback for superusers
+        if self.is_superuser:
+            return f"admin_{self.matricNumber}"
+        return f"{self.fullName} ({self.matricNumber})" if self.fullName else self.matricNumber
 
