@@ -34,12 +34,7 @@ Ensure you have Python installed on your system. You can download it from [pytho
    python manage.py migrate
    ```
 
-5. Create a superuser (optional, for admin access):
-   ```bash
-   python manage.py createsuperuser
-   ```
-
-6. Start the development server:
+5. Start the development server:
    ```bash
    python manage.py runserver
    ```
