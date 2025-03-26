@@ -46,10 +46,9 @@ Ensure you have Python installed on your system. You can download it from [pytho
 
 ## API Endpoints
 ### Authentication
-- `POST /api/auth/login/` – Login with credentials and receive a JWT token.
-- `POST /api/auth/signup/` – Create a new user account.
-- `POST /api/auth/logout/` – Logout the user.
-- `POST /api/token/refresh/` – Refresh an expired JWT token.
+- `POST http://127.0.0.1:8000/login` – Login with credentials and receive a JWT token.
+- `POST http://127.0.0.1:8000/register` – Create a new user account.
+- `POST http://127.0.0.1:8000/token/refresh` – Refresh an expired JWT token.
 
 ## Technologies Used
 - **Django**: Backend framework
