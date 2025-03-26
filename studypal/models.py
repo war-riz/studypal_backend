@@ -16,6 +16,6 @@ class CustomUser(AbstractUser):
     )  # User Type (Growing or Elite)
 
     def __str__(self):
-        return self.full_name
+        return self.fullName
 
 
